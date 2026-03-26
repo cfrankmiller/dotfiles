@@ -1,0 +1,11 @@
+
+source ~/.bash_prompt
+source ~/.bash_aliases
+
+# $HOME/opt
+PATH=$HOME/opt/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/opt/lib
+export CMAKE_PREFIX_PATH=$HOME/opt
+
+# always first in path
+PATH=$HOME/bin:$PATH
