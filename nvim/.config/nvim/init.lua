@@ -43,6 +43,8 @@ vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, {desc = '[G]oto Code [A]ction
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, {desc = 'Hover Documentation'})
 vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, {desc = 'Signature Documentation'})
 
+vim.keymap.set('n', '<leader>ee', vim.diagnostic.open_float)
+
 --vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, {desc = '[G]oto [R]eferences'})
 --vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, {desc = 'Type [D]efinition'})
 --vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, {desc = '[D]ocument [S]ymbols'})
@@ -121,6 +123,13 @@ vim.keymap.set('n', '<leader>ff', '<cmd>Pick buffers<cr>', {desc = 'Search open 
 vim.keymap.set('n', '<leader>fs', '<cmd>Pick files<cr>', {desc = 'Search all files'})
 vim.keymap.set('n', '<leader>fh', '<cmd>Pick help<cr>', {desc = 'Search help tags'})
 
+function grep_from_search()
+  search = vim.api.nvim_eval([[getreg('/')]])
+  search = search:gsub("\\[<>]", "\\b")
+  require('mini.pick').builtin.grep({tool = 'rg', pattern = search })
+end
+vim.keymap.set('n', '<leader>ss', ':lua grep_from_search()<CR>', {desc = 'Search all files with grep'})
+
 -- git
 MiniDeps.add('tpope/vim-fugitive')
 MiniDeps.add('lewis6991/gitsigns.nvim')
@@ -129,6 +138,21 @@ require('gitsigns').setup({})
 
 vim.keymap.set('n', '<leader>vd', '<cmd>Gdiffsplit!<cr>', {desc = 'Git diff'})
 vim.keymap.set('n', '<leader>vs', '<cmd>Git<cr>', {desc = 'Git status'})
+
+-- A.vim
+MiniDeps.add('Kris2k/A.vim')
+
+vim.cmd([[
+  let g:alternateNoDefaultAlternate=1
+  let g:alternateSearchPath = 'reg:|\([^/]*\)/src|\1/include/\1|'
+  let g:alternateSearchPath .= ',reg:|/include/\([^/]*\)|/src|'
+
+  let g:alternateExtensions_h   = "c,cpp,cxx,tpp,txx,cc,CC"
+  let g:alternateExtensions_cpp = "hpp,h"
+  let g:alternateExtensions_hpp = "cpp"
+  let g:alternateExtensions_tpp = "hpp"
+  let g:alternateExtensions_txx = "hxx,h"
+]])
 
 --------------------------------------------------------------------------------------------
 -- Basic Keymaps
