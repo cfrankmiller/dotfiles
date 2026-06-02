@@ -60,15 +60,9 @@ vim.keymap.set('i', '<c-K>', '<c-o>:py3f ' .. clangformat .. '<cr>')
 
 --------------------------------------------------------------------------------------------
 -- Pluggins
-local ok, MiniDeps = pcall(require, 'mini.deps')
-if not ok then
-  vim.notify('[WARN] mini.deps module not found', vim.log.levels.WARN)
-  return
-end
-MiniDeps.setup({})
 
 -- nightfox colorscheme
-MiniDeps.add('edeneast/nightfox.nvim')
+vim.pack.add({'https://github.com/edeneast/nightfox.nvim'})
 local nightfox = require('nightfox')
 local palette = require('nightfox.palette').load('nightfox')
 local color = require("nightfox.lib.color")
@@ -105,7 +99,10 @@ nightfox.setup({
 vim.cmd.colorscheme('nightfox')
 
 -- lsp
-MiniDeps.add('neovim/nvim-lspconfig')
+vim.pack.add({'https://github.com/neovim/nvim-lspconfig'})
+
+-- mini
+vim.pack.add({'https://github.com/nvim-mini/mini.nvim'})
 
 -- mini.files
 require('mini.icons').setup({style = 'ascii'})
@@ -131,8 +128,8 @@ end
 vim.keymap.set('n', '<leader>ss', ':lua grep_from_search()<CR>', {desc = 'Search all files with grep'})
 
 -- git
-MiniDeps.add('tpope/vim-fugitive')
-MiniDeps.add('lewis6991/gitsigns.nvim')
+vim.pack.add({'https://github.com/tpope/vim-fugitive'})
+vim.pack.add({'https://github.com/lewis6991/gitsigns.nvim'})
 
 require('gitsigns').setup({})
 
@@ -140,7 +137,7 @@ vim.keymap.set('n', '<leader>vd', '<cmd>Gdiffsplit!<cr>', {desc = 'Git diff'})
 vim.keymap.set('n', '<leader>vs', '<cmd>Git<cr>', {desc = 'Git status'})
 
 -- A.vim
-MiniDeps.add('Kris2k/A.vim')
+vim.pack.add({'https://github.com/Kris2k/A.vim'})
 
 vim.cmd([[
   let g:alternateNoDefaultAlternate=1
