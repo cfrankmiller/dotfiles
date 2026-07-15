@@ -18,8 +18,23 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- mouse
-vim.o.mouse = 'a'
+vim.o.mouse = 'n'
 vim.o.mousehide = true
+
+-- filetype styles
+vim.cmd([[
+function! SetEsriStyle()
+  set list et sts=2 sw=2 nowrap tw=120 fo=cqro
+  set cindent cino={:0,g0,c0,(0,(s,m1
+  set comments=://!,://:,:///,://
+endfunction
+ 
+autocmd FileType cmake set nowrap et sts=2 sw=2 tw=100 fo=cqro nospell nocindent comments=b:#,fb:-
+autocmd FileType cpp   call SetEsriStyle()
+autocmd FileType sh    set list et sts=2 sw=2 nowrap tw=0
+autocmd FileType lua   set list et sts=2 sw=2 nowrap tw=0
+autocmd FileType json  set list et sts=2 sw=2 nowrap tw=0
+]])
 
 -- diff
 vim.o.diffopt = "internal,filler,closeoff,vertical"
@@ -112,10 +127,30 @@ require('mini.files').setup({
     go_in_plus = 'l',
   }
 })
-vim.keymap.set('n', '<leader>fe', '<cmd>lua MiniFiles.open()<cr>', {desc = 'File explorer'})
+--vim.keymap.set('n', '<leader>fe', '<cmd>lua MiniFiles.open()<cr>', {desc = 'File explorer'})
+--vim.keymap.set('n', '<leader>fe', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<cr>', {desc = 'File explorer'})
+vim.keymap.set('n', '<leader>fe', function()
+  local MiniFiles = require('mini.files')
+  
+  -- Open mini.files focused on the current file buffer path
+  -- if no valid file is active, it falls back to the current directory
+  if not MiniFiles.close() then
+    MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+    
+    -- Defer revealing the workspace CWD so mini.files has time to render
+    vim.defer_fn(function()
+      MiniFiles.reveal_cwd()
+    end, 30)
+  end
+end, { desc = 'File explorer' })
 
 -- mini.pick
-require('mini.pick').setup({})
+require('mini.pick').setup({
+    mappings = {
+      mark_all          = '<C-e>',
+      choose_marked     = '<C-q>',
+    }
+})
 vim.keymap.set('n', '<leader>ff', '<cmd>Pick buffers<cr>', {desc = 'Search open files'})
 vim.keymap.set('n', '<leader>fs', '<cmd>Pick files<cr>', {desc = 'Search all files'})
 vim.keymap.set('n', '<leader>fh', '<cmd>Pick help<cr>', {desc = 'Search help tags'})
@@ -150,6 +185,35 @@ vim.cmd([[
   let g:alternateExtensions_tpp = "hpp"
   let g:alternateExtensions_txx = "hxx,h"
 ]])
+
+-- diffview
+vim.pack.add({'https://github.com/sindrets/diffview.nvim'})
+require("diffview").setup({
+  use_icons = false,
+  file_panel = {
+    win_config = {
+      position = "bottom",
+      height = 16,
+    },
+  },
+  file_history_panel = {
+    win_config = {
+      position = "bottom",
+      height = 16,
+    },
+  },
+  signs = {
+    fold_closed = " ",
+    fold_open = " ",
+    done = "✓",
+  },
+  hooks = {
+      diff_buf_read = function(bufnr)
+          -- Change local options in diff buffers
+          vim.opt_local.wrap = false
+      end,
+  }
+})
 
 --------------------------------------------------------------------------------------------
 -- Basic Keymaps

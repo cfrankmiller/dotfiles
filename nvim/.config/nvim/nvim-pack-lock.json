@@ -4,6 +4,10 @@
       "rev": "f1a2350214e7bb14cf314aae3c9d5fad8993ae0c",
       "src": "https://github.com/Kris2k/A.vim"
     },
+    "diffview.nvim": {
+      "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
+      "src": "https://github.com/sindrets/diffview.nvim"
+    },
     "gitsigns.nvim": {
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
