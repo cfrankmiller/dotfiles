@@ -1,0 +1,24 @@
+[user]
+	name = Frank Miller
+	email = fmiller@esri.com
+[core]
+	editor = nvim
+[fetch]
+    prune = true
+[init]
+	defaultBranch = main
+[diff]
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -c 'winc l' -d $LOCAL $REMOTE"
+[alias]
+    ds = !git diff --stat
+    dn = !git diff --name-only
+    dt = !git difftool
+
+    dsm = !git diff --stat $(git merge-base HEAD main)
+    dnm = !git diff --name-only $(git merge-base HEAD main)
+    dtm = !git difftool $(git merge-base HEAD main)
+
+    br = !git branch --sort=-committerdate
+    brr = !git branch --sort=committerdate
