@@ -66,10 +66,7 @@ vim.keymap.set('n', '<leader>ee', vim.diagnostic.open_float)
 --vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, {desc = '[W]orkspace [S]ymbols'})
 
 -- clang-format
-vim.cmd([[
-:let g:clang_format_path = 'clang-format-19'
-]])
-local clangformat = '/home/frank/bin/clang-format.py'
+local clangformat = vim.fn.expand("~/bin/clang-format.py");
 vim.keymap.set({'n', 'v'}, '<c-K>', ':py3f ' .. clangformat .. '<cr>')
 vim.keymap.set('i', '<c-K>', '<c-o>:py3f ' .. clangformat .. '<cr>')
 
@@ -317,17 +314,11 @@ nmap('<leader>cn', ':cnext<CR>')
 nmap('<leader>cf', ':cfile<CR>')
 
 
--- clang-format
---vim.cmd([[
---:let g:clang_format_path = '/usr/local/rtc/llvm/19.1.2/bin/clang-format'
---]])
---local clangformat = '/usr/local/rtc/llvm/19.1.2/share/clang/clang-format.py'
---nmap('<c-K>', ':py3f ' .. clangformat .. '<cr>')
---vmap('<c-K>', ':py3f ' .. clangformat .. '<cr>')
---imap('<c-K>', '<c-o>:py3f ' .. clangformat .. '<cr>')
---
---local clangformat_frank = '/home/frank/bin/clang-format.py'
---nmap('<c-F>', ':py3f ' .. clangformat_frank .. '<cr>')
---vmap('<c-F>', ':py3f ' .. clangformat_frank .. '<cr>')
---imap('<c-F>', '<c-o>:py3f ' .. clangformat_frank .. '<cr>')
+--------------------------------------------------------------------------------------------
+-- Local
+
+local local_config_file = vim.fn.expand("~/.nvim_local.lua");
+if vim.uv.fs_stat(local_config_file) then
+  dofile(local_config_file)
+end
 
